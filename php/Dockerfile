@@ -1,16 +1,20 @@
 ARG VERSION
-FROM php:${VERSION}-fpm
+#FROM php:${VERSION}-fpm
+FROM php:7.4.27-zts-buster
 
-LABEL maintainer="ogenes.yi@gmail.com"
+LABEL maintainer="ogeness.yi@gmail.com"
 
 # 复制时区配置
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+
+
 # 安装基础
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-    apt-utils \
+RUN sed -i "s@deb.debian.org@mirrors.aliyun.com@g" /etc/apt/sources.list \
+        && apt-get update \
+        && apt-get install -y \
+        apt-utils \
     curl \
     sudo \
     iputils-ping \
